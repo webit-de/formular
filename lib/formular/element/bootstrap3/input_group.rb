@@ -1,13 +1,11 @@
 require 'formular/elements'
-require 'formular/element/modules/container'
 require 'formular/element/modules/wrapped'
 
 module Formular
   class Element
     module Bootstrap3
-      class InputGroup < Formular::Element::Input
+      class InputGroup < Formular::Element::InputGroup
         include Formular::Element::Modules::Wrapped
-        include Formular::Element::Modules::Container
         include Formular::Element::Bootstrap3::ColumnControl
 
         class Wrapper < Formular::Element::Div
@@ -26,7 +24,7 @@ module Formular
 
         add_option_keys :left_addon, :right_addon, :left_btn, :right_btn
 
-        html(:raw_input) { closed_start_tag }
+        html(:raw_input) { start_tag }
 
         html(:no_cols) do |input|
           content = if input.has_content?

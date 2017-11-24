@@ -43,7 +43,7 @@ module Formular
 
           set_default :control_label_options, { class: ['checkbox-inline'] }
 
-          html { closed_start_tag }
+          html { start_tag }
         end # class InlineCheckbox
 
         module StackedCheckable
@@ -77,7 +77,7 @@ module Formular
           include Formular::Element::Modules::Wrapped
           include StackedCheckable
 
-          html { closed_start_tag }
+          html { start_tag }
 
           def inner_wrapper_class
             ['checkbox']

@@ -1,12 +1,12 @@
 require 'formular/element/module'
-require 'formular/html_escape'
+require 'trailblazer/html/html_escape'
 module Formular
   class Element
     module Modules
       # this module provides error methods and options to a control when included
       module Error
         include Formular::Element::Module
-        include HtmlEscape
+        include Trailblazer::Html::HtmlEscape
         add_option_keys :error
 
         # options functionality (same as SimpleForm):

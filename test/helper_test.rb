@@ -1,6 +1,5 @@
 require 'test_helper'
 require 'formular/helper'
-require 'formular/builder'
 
 class HelperTest < Minitest::Spec
   SomeFancyBuilder = Class.new(Formular::Builders::Basic)

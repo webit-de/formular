@@ -96,7 +96,7 @@ describe 'errors module' do
 
     it '#wrapped input should include the error message' do
       element = builder.wrapped_input(:body)
-      element.to_s.must_equal %(<div class="error"><input name="body" id="body" type="text"/><p>This really isn&#39;t good enough!</p></div>)
+      element.to_s.must_equal %(<div class="error"><input name="body" id="body" type="text"><p>This really isn&#39;t good enough!</p></div>)
     end
   end
 end

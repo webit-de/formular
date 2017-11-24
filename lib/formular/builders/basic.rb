@@ -1,19 +1,34 @@
-require 'formular/builder'
+require 'trailblazer/html/builder'
 require 'formular/elements'
+require 'formular/path'
 module Formular
   module Builders
     # I'm not quite sure why I made this a seperate class
     # But I kind of see myself having Builder as a generic
     # viewbuilder and this basic class as Form
-    class Basic < Formular::Builder
-      element_set(
+    class Basic < Trailblazer::Html::Builder
+      def self.define_element_method(element_name, element_class)
+        define_method(element_name) do |*args, &block|
+          if args.size > 1
+            name_or_content, options = args
+          else
+            case args.first
+            when Symbol, String then name_or_content = args.first
+            when Hash then options = args.first
+            end
+          end
+
+          options ||= {}
+          options[:builder] = self
+          options[:attribute_name] = name_or_content if name_or_content
+
+          element_class.(options, &block)
+        end
+      end
+
+      element_set(Trailblazer::Html::Element::VALID_ELEMENT_SET.merge(
         error_notification: Formular::Element::ErrorNotification,
         form: Formular::Element::Form,
-        fieldset: Formular::Element::Fieldset,
-        legend: Formular::Element::Legend,
-        div: Formular::Element::Div,
-        span: Formular::Element::Span,
-        p: Formular::Element::P,
         input: Formular::Element::Input,
         hidden: Formular::Element::Hidden,
         label: Formular::Element::Label,
@@ -26,7 +41,7 @@ module Formular
         radio: Formular::Element::Radio,
         wrapper: Formular::Element::Div,
         error_wrapper: Formular::Element::Div
-      )
+      ))
 
       def initialize(model: nil, path_prefix: nil, errors: nil, values: nil, elements: {})
         @model = model

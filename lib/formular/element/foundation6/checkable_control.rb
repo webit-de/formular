@@ -25,7 +25,7 @@ module Formular
 
           module InstanceMethods
             def wrapper(&block)
-              builder.fieldset(Attributes[options[:wrapper_options]], &block)
+              builder.fieldset(Trailblazer::Html::Attributes[options[:wrapper_options]], &block)
             end
           end
         end # class Checkable
@@ -46,7 +46,7 @@ module Formular
           set_default :label_options, { class: ['is-invalid-label'] }, if: :has_errors?
           set_default :control_label_options, { class: ['is-invalid-label'] }, if: :has_errors?
 
-          html { closed_start_tag }
+          html { start_tag }
         end # class Checkbox
 
         class Radio < Formular::Element::Radio

@@ -1,5 +1,5 @@
 require 'formular/element/module'
-require 'formular/element/modules/escape_value'
+require 'trailblazer/html/html_escape'
 module Formular
   class Element
     module Modules
@@ -7,7 +7,7 @@ module Formular
       # name & value based on the attribute name
       module Control
         include Formular::Element::Module
-        include Formular::Element::Modules::EscapeValue
+        include Trailblazer::Html::HtmlEscape
 
         add_option_keys :attribute_name
 

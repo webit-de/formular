@@ -1,16 +1,15 @@
 require 'formular/elements'
-require 'formular/element/modules/container'
 require 'formular/element/modules/wrapped'
 module Formular
   class Element
     module Foundation6
-      class InputGroup < Formular::Element::Input
+      class InputGroup < Formular::Element::InputGroup
         module WrappedGroup
           include Formular::Element::Module
           include Formular::Element::Modules::Wrapped
 
           def wrapper(&block)
-            builder.fieldset(Attributes[options[:wrapper_options]], &block)
+            builder.fieldset(Trailblazer::Html::Attributes[options[:wrapper_options]], &block)
           end
         end # module WrappedGroup
 
@@ -28,13 +27,12 @@ module Formular
         end # class Button
 
         include WrappedGroup
-        include Formular::Element::Modules::Container
 
         set_default :class, :input_class # we need to do classes better...
 
         add_option_keys :left_label, :right_label, :left_button, :right_button
 
-        html(:raw_input) { closed_start_tag }
+        html(:raw_input) { start_tag }
 
         html do |input|
           content = input.has_content? ? input.content : input.to_html(context: :with_options)
@@ -72,7 +70,7 @@ module Formular
         def label_options
           return super unless has_errors?
 
-          @label_options ||= Attributes[options[:label_options]].merge(class: ['is-invalid-label'])
+          @label_options ||= Trailblazer::Html::Attributes[options[:label_options]].merge(class: ['is-invalid-label'])
         end
 
         html(:with_options) do |input|

@@ -1,12 +1,12 @@
 require 'formular/element/module'
-require 'formular/html_escape'
+require 'trailblazer/html/html_escape'
 module Formular
   class Element
     module Modules
       # this module provides hints to a control when included.
       module Hint
         include Formular::Element::Module
-        include HtmlEscape
+        include Trailblazer::Html::HtmlEscape
         add_option_keys :hint, :hint_options
 
         # options functionality (same as SimpleForm):

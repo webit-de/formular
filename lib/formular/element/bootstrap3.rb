@@ -1,4 +1,3 @@
-require 'formular/element'
 require 'formular/elements'
 require 'formular/element/modules/wrapped'
 require 'formular/element/module'

@@ -1,45 +1,35 @@
-require 'formular/element'
+require 'trailblazer/html/elements'
 require 'formular/element/module'
-require 'formular/element/modules/container'
 require 'formular/element/modules/wrapped'
 require 'formular/element/modules/control'
 require 'formular/element/modules/checkable'
 require 'formular/element/modules/error'
-require 'formular/element/modules/escape_value'
-require 'formular/html_escape'
+require 'trailblazer/html/html_escape'
 
 module Formular
   class Element
-    # These three are really just provided for convenience when creating other elements
-    Container = Class.new(Formular::Element) { include Formular::Element::Modules::Container }
-    Control = Class.new(Formular::Element) { include Formular::Element::Modules::Control }
-    Wrapped = Class.new(Formular::Element) { include Formular::Element::Modules::Wrapped }
 
-    # define some base classes to build from or easily use elsewhere
-    OptGroup = Class.new(Container) { tag :optgroup }
-    Fieldset = Class.new(Container) { tag :fieldset }
-    Legend = Class.new(Container) { tag :legend }
-    Div = Class.new(Container) { tag :div }
-    P = Class.new(Container) { tag :p }
-    Span = Class.new(Container) { tag :span }
-    Small = Class.new(Container) { tag :small }
-
-    class Option < Container
-      tag :option
-      include Formular::Element::Modules::EscapeValue
+    class OptGroup < Trailblazer::Html::Element::Optgroup
     end
 
+    class Input < Trailblazer::Html::Element::Input
+      include Formular::Element::Modules::Control
+      set_default :type, 'text'
+      html { start_tag }
+    end # class Input
 
-    class Hidden < Control
+    class InputGroup < Trailblazer::Html::Element::Component
       tag :input
-      set_default :type, 'hidden'
-
-      html { closed_start_tag }
+      include Formular::Element::Modules::Control
+      set_default :type, 'text'
     end
 
-    class Form < Container
-      tag :form
+    class Hidden < Input
+      set_default :type, 'hidden'
+      html { start_tag }
+    end
 
+    class Form < Trailblazer::Html::Element::Form
       add_option_keys :enforce_utf8, :csrf_token, :csrf_token_name
 
       set_default :method, 'post'
@@ -78,7 +68,7 @@ module Formular
         # Use raw HTML to ensure the value is written as an HTML entity; it
         # needs to be the right character regardless of which encoding the
         # browser infers.
-        %(<input name="utf8" type="hidden" value="✓"/>)
+        %(<input name="utf8" type="hidden" value="✓">)
       end
 
       # because this mutates attributes, we have to call this before rendering the start_tag
@@ -99,8 +89,7 @@ module Formular
       end
     end
 
-    class ErrorNotification < Formular::Element
-      tag :div
+    class ErrorNotification < Trailblazer::Html::Element::Div
       add_option_keys :message
 
       html do |element|
@@ -123,24 +112,17 @@ module Formular
       end
     end
 
-    class Error < P
+    class Error < Trailblazer::Html::Element::P
       include Formular::Element::Modules::Error
       add_option_keys :attribute_name
       set_default :content, :error_text
     end # class Error
 
-    class Textarea < Control
-      include Formular::Element::Modules::Container
-      tag :textarea
-      add_option_keys :value
-
-      def content
-        options[:value] || super
-      end
+    class Textarea < Trailblazer::Html::Element::Textarea
+      include Formular::Element::Modules::Control
     end # class Textarea
 
-    class Label < Container
-      tag :label
+    class Label < Trailblazer::Html::Element::Label
       add_option_keys :labeled_control, :attribute_name
       set_default :for, :labeled_control_id
 
@@ -152,36 +134,18 @@ module Formular
       end
     end # class Label
 
-    class Submit < Formular::Element
-      include Formular::Element::Modules::EscapeValue
-      tag :input
-
+    class Submit < Input
       set_default :type, 'submit'
-
-      html { closed_start_tag }
+      html { start_tag }
     end # class Submit
 
-    class Button < Container
+    class Button < Trailblazer::Html::Element::Button
       include Formular::Element::Modules::Control
-
-      tag :button
     end # class Button
 
-    class Input < Control
-      include HtmlEscape
-
-      tag :input
-      set_default :type, 'text'
-      process_option :value, :html_escape
-
-      html { closed_start_tag }
-    end # class Input
-
-    class Select < Control
+    class Select < Trailblazer::Html::Element::Select
+      include Formular::Element::Modules::Control
       include Formular::Element::Modules::Collection
-      include HtmlEscape
-
-      tag :select
 
       add_option_keys :value, :prompt, :include_blank
       process_option :collection, :inject_placeholder
@@ -270,8 +234,8 @@ module Formular
       end
     end # class Select
 
-    class Checkbox < Control
-      tag :input
+    class Checkbox < Input
+      include Formular::Element::Modules::Control
 
       add_option_keys :unchecked_value, :checked_value, :include_hidden, :multiple
 
@@ -287,7 +251,7 @@ module Formular
           element.to_html(context: :with_collection)
         else
           concat element.hidden_tag
-          concat closed_start_tag
+          concat start_tag
         end
       end
 
@@ -324,15 +288,15 @@ module Formular
       end
     end # class Checkbox
 
-    class Radio < Control
-      tag :input
+    class Radio < Trailblazer::Html::Element::Input
+      include Formular::Element::Modules::Control
 
       set_default :type, 'radio'
       set_default :value, nil # instead of reader value
 
       include Formular::Element::Modules::Checkable
 
-      html { closed_start_tag }
+      html { start_tag }
     end # class Radio
   end # class Element
 end # module Formular

@@ -1,5 +1,11 @@
 # Master
 
+# v0.3.0 2017-11-23
+
+### Internal
+
+* extracted the builder code to a new gem called `trailblazer-html`
+
 # v0.2.2 2017-09-13
 
 ### Added

@@ -55,7 +55,7 @@ module Formular
           class CustomCheckbox < Formular::Element::Checkbox
             include CustomCheckable
 
-            html { closed_start_tag }
+            html { start_tag }
 
             set_default :control_label_options, { class: ['custom-control custom-checkbox'] }
           end # class Checkbox

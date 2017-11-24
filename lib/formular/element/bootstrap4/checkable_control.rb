@@ -10,7 +10,7 @@ module Formular
           include Formular::Element::Modules::Wrapped
           set_default :class, ['form-check-input']
 
-          html { closed_start_tag }
+          html { start_tag }
         end # class Checkbox
 
         class Radio < Formular::Element::Radio

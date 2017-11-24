@@ -59,7 +59,7 @@ describe 'hints module' do
 
     it '#wrapped input should include the hint' do
       element = builder.wrapped_input(:body, hint: 'Some hint')
-      element.to_s.must_equal %(<div><input name="body" id="body" type="text" aria-describedby="body_hint"/><p id="body_hint">Some hint</p></div>)
+      element.to_s.must_equal %(<div><input name="body" id="body" type="text" aria-describedby="body_hint"><p id="body_hint">Some hint</p></div>)
     end
   end
 end

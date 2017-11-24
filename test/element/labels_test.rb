@@ -59,7 +59,7 @@ describe 'labels module' do
 
     it '#wrapped input should include the label' do
       element = builder.wrapped_input(:body, label: 'Body')
-      element.to_s.must_equal %(<div><label for="body">Body</label><input name="body" id="body" type="text"/></div>)
+      element.to_s.must_equal %(<div><label for="body">Body</label><input name="body" id="body" type="text"></div>)
     end
   end
 end
